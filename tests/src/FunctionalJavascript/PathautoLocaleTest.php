@@ -4,11 +4,10 @@ namespace Drupal\Tests\pathauto\FunctionalJavascript;
 
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\pathauto\PathautoState;
-use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\pathauto\Functional\PathautoTestHelperTrait;
-
 
 /**
  * Test pathauto functionality with localization and translation.

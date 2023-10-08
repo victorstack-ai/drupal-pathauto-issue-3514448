@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\pathauto\Functional;
 
-use Drupal\Tests\BrowserTestBase;
 use Drupal\comment\Tests\CommentTestTrait;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests pathauto settings form.
