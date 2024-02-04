@@ -173,7 +173,7 @@ function pathauto_update_8100() {
             'negate' => FALSE,
             'context_mapping' => [
               'language' => $language_mapping,
-            ]
+            ],
           ]);
 
           // Add the context relationship for this language.

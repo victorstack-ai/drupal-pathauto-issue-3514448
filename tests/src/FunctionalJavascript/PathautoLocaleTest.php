@@ -104,7 +104,7 @@ class PathautoLocaleTest extends WebDriverTestBase {
       'administer languages',
       'translate any entity',
       'administer content translation',
-      'create content translations'
+      'create content translations',
     ];
     $admin_user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($admin_user);
@@ -198,7 +198,11 @@ class PathautoLocaleTest extends WebDriverTestBase {
     $pattern->save();
 
     // Create a node with language Not Applicable.
-    $node = $this->createNode(['type' => 'article', 'title' => 'Test node', 'langcode' => LanguageInterface::LANGCODE_NOT_APPLICABLE]);
+    $node = $this->createNode([
+      'type' => 'article',
+      'title' => 'Test node',
+      'langcode' => LanguageInterface::LANGCODE_NOT_APPLICABLE,
+    ]);
 
     // Check that the generated alias has language Not Specified.
     $alias = \Drupal::service('pathauto.alias_storage_helper')->loadBySource('/node/' . $node->id());

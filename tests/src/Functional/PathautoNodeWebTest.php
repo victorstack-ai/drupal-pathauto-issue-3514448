@@ -288,7 +288,11 @@ class PathautoNodeWebTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
 
     // Now create a node through the API.
-    $node = Node::create(['type' => 'article', 'title' => 'Sample article API', 'path' => ['alias' => '/sample-article-api']]);
+    $node = Node::create([
+      'type' => 'article',
+      'title' => 'Sample article API',
+      'path' => ['alias' => '/sample-article-api'],
+    ]);
     $node->save();
 
     // Test the alias.
