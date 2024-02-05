@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\pathauto\FunctionalJavascript;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\pathauto\Entity\PathautoPattern;

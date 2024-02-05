@@ -415,7 +415,7 @@ class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterfa
       return $contexts[$token];
     }
     else {
-      list($base, $property_path) = explode(':', $token, 2);
+      [$base, $property_path] = explode(':', $token, 2);
       // A base must always be set. This method recursively calls itself
       // setting bases for this reason.
       if (!empty($contexts[$base])) {

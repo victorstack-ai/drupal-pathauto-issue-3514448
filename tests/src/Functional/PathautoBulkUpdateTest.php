@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\pathauto\Functional;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\pathauto\PathautoGeneratorInterface;
 use Drupal\pathauto\PathautoState;
 use Drupal\Tests\BrowserTestBase;

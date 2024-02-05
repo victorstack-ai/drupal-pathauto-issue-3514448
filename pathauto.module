@@ -171,7 +171,7 @@ function pathauto_pattern_validate($element, FormStateInterface $form_state) {
     }
 
     if (preg_match('/(\s$)+/', $element['#value'])) {
-      $form_state->setError($element, t('The %element-title doesn\'t allow the patterns ending with whitespace.', ['%element-title' => $title]));
+      $form_state->setError($element, t("The %element-title doesn't allow the patterns ending with whitespace.", ['%element-title' => $title]));
     }
   }
 
