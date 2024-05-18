@@ -100,7 +100,6 @@ class PatternEditForm extends EntityForm {
       '#ajax' => [
         'callback' => '::ajaxReplacePatternForm',
         'wrapper' => 'pathauto-pattern',
-        'method' => 'replace',
       ],
     ];
 

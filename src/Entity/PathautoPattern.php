@@ -16,6 +16,7 @@ use Drupal\Core\TypedData\DataReferenceDefinitionInterface;
 use Drupal\Core\TypedData\DataReferenceInterface;
 use Drupal\Core\TypedData\ListDataDefinitionInterface;
 use Drupal\Core\TypedData\ListInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\pathauto\PathautoPatternInterface;
 
 /**
@@ -369,7 +370,13 @@ class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterfa
             $context_handler->applyContextMapping($condition, $contexts);
           }
           catch (ContextException $e) {
-            watchdog_exception('pathauto', $e);
+            if (method_exists(Error::class, 'logException')) {
+              Error::logException(\Drupal::logger('pathauto'), $e);
+            }
+            else {
+              /* @phpstan-ignore-next-line */
+              watchdog_exception('pathauto', $e);
+            }
             return FALSE;
           }
         }
