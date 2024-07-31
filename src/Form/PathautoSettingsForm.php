@@ -223,7 +223,7 @@ class PathautoSettingsForm extends ConfigFormBase {
     $form['safe_tokens'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Safe tokens'),
-      '#default_value' => implode(', ', $config->get('safe_tokens')),
+      '#default_value' => $config->get('safe_tokens') ? implode(', ', $config->get('safe_tokens')) : NULL,
       '#description' => $this->t('List of tokens that are safe to use in alias patterns and do not need to be cleaned. For example urls, aliases, machine names. Separated with a comma.'),
     ];
 
