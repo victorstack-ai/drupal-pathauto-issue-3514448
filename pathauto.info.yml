@@ -1,6 +1,6 @@
 name : 'Pathauto'
 description : 'Provides a mechanism for modules to automatically generate aliases for the content they manage.'
-core_version_requirement: ^9.3 || ^10 || ^11
+core_version_requirement: ^9.4 || ^10 || ^11
 type: module
 
 dependencies:
