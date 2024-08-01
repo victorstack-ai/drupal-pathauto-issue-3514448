@@ -48,6 +48,8 @@ class PathautoUiTest extends WebDriverTestBase {
     $permissions = [
       'administer pathauto',
       'administer url aliases',
+      'bulk delete aliases',
+      'bulk update aliases',
       'create url aliases',
       'administer nodes',
       'bypass node access',

@@ -49,6 +49,8 @@ class PathautoNodeWebTest extends BrowserTestBase {
     $permissions = [
       'administer pathauto',
       'administer url aliases',
+      'bulk delete aliases',
+      'bulk update aliases',
       'create url aliases',
       'bypass node access',
       'access content overview',
