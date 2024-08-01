@@ -118,10 +118,11 @@ class PathautoSettingsForm extends ConfigFormBase {
 
       if (is_subclass_of($entity_type->getClass(), FieldableEntityInterface::class) && $entity_type->hasLinkTemplate('canonical')) {
         $field_definitions = $this->entityFieldManager->getBaseFieldDefinitions($entity_type_id);
+        $enabled_entity_types = $config->get('enabled_entity_types') ?? [];
         $form['enabled_entity_types'][$entity_type_id] = [
           '#type' => 'checkbox',
           '#title' => $entity_type->getLabel(),
-          '#default_value' => isset($field_definitions['path']) || in_array($entity_type_id, $config->get('enabled_entity_types')),
+          '#default_value' => isset($field_definitions['path']) || in_array($entity_type_id, $enabled_entity_types),
           '#disabled' => isset($field_definitions['path']) && ($field_definitions['path']->getProvider() != 'pathauto' || $patterns_count),
         ];
       }
