@@ -37,3 +37,7 @@ pathauto.settings:
 action.configuration.pathauto_update_alias:
   type: action_configuration_default
   label: 'Update URL alias'
+
+action.configuration.entity:pathauto_delete_alias:*:
+  type: action_configuration_default
+  label: 'Configuration for URL alias delete actions'
