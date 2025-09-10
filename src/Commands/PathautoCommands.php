@@ -86,7 +86,7 @@ class PathautoCommands extends DrushCommands {
    *
    * @aliases pag
    */
-  public function generateAliases($action = NULL, array $types = NULL) {
+  public function generateAliases($action = NULL, ?array $types = NULL) {
     $batch = [
       'title' => dt('Bulk updating URL aliases'),
       'operations' => [
@@ -132,7 +132,7 @@ class PathautoCommands extends DrushCommands {
    *
    * @aliases pad
    */
-  public function deleteAliases(array $types = NULL, $options = ['purge' => FALSE]) {
+  public function deleteAliases(?array $types = NULL, $options = ['purge' => FALSE]) {
     $delete_all = count($types) === count($this->getAliasTypes());
 
     // Keeping custom aliases forces us to go the slow way to correctly check
