@@ -108,7 +108,7 @@ class PathautoEntityWithStringIdTest extends KernelTestBase {
    *
    * @see \Drupal\Tests\pathauto\Kernel\PathautoEntityWithStringIdTest::testEntityWithStringId()
    */
-  public function entityWithStringIdProvider() {
+  public static function entityWithStringIdProvider() {
     return [
       'ascii with less or equal 128 chars' => [
         str_repeat('a', 128), str_repeat('a', 128),

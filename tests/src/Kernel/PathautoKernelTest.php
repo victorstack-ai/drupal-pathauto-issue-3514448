@@ -96,7 +96,6 @@ class PathautoKernelTest extends KernelTestBase {
 
     $type = NodeType::create(['type' => 'page']);
     $type->save();
-    node_add_body_field($type);
 
     $this->nodePattern = $this->createPattern('node', '/content/[node:title]');
     $this->userPattern = $this->createPattern('user', '/users/[user:name]');
@@ -391,15 +390,26 @@ class PathautoKernelTest extends KernelTestBase {
    * not create an alias for a pattern that does not get any tokens replaced.
    */
   public function testNoTokensNoAlias() {
-    $this->installConfig(['filter']);
+    $field_storage = FieldStorageConfig::create([
+      'entity_type' => 'node',
+      'field_name' => 'test',
+      'type' => 'string',
+    ]);
+    $field_storage->save();
+    $field = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => 'page',
+    ]);
+    $field->save();
+
     $this->nodePattern
-      ->setPattern('/content/[node:body]')
+      ->setPattern('/content/[node:test]')
       ->save();
 
     $node = $this->drupalCreateNode();
     $this->assertNoEntityAliasExists($node);
 
-    $node->body->value = 'hello';
+    $node->set('test', 'hello');
     $node->save();
     $this->assertEntityAlias($node, '/content/hello');
   }

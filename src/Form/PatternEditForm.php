@@ -120,7 +120,7 @@ class PatternEditForm extends EntityForm {
         '#default_value' => $this->entity->getPattern(),
         '#size' => 65,
         '#maxlength' => 1280,
-        '#element_validate' => ['token_element_validate', 'pathauto_pattern_validate'],
+        '#element_validate' => ['token_element_validate', [static::class, 'validatePattern']],
         '#after_build' => ['token_element_validate'],
         '#token_types' => $alias_type->getTokenTypes(),
         '#min_tokens' => 1,
@@ -290,6 +290,40 @@ class PatternEditForm extends EntityForm {
   public function submitSelectType(array $form, FormStateInterface $form_state) {
     $this->entity = $this->buildEntity($form, $form_state);
     $form_state->setRebuild();
+  }
+
+  /**
+   * Validate the pattern field.
+   *
+   * Ensure it doesn't contain any characters that are invalid in URLs.
+   */
+  public static function validatePattern($element, FormStateInterface $form_state) {
+
+    if (isset($element['#value'])) {
+      $title = empty($element['#title']) ? $element['#parents'][0] : $element['#title'];
+      $invalid_characters = ['#', '?', '&'];
+      $invalid_characters_used = [];
+
+      foreach ($invalid_characters as $invalid_character) {
+        if (strpos($element['#value'], $invalid_character) !== FALSE) {
+          $invalid_characters_used[] = $invalid_character;
+        }
+      }
+
+      if (!empty($invalid_characters_used)) {
+        $form_state->setError($element, t('The %element-title is using the following invalid characters: @invalid-characters.', [
+          '%element-title' => $title,
+          '@invalid-characters' => implode(', ', $invalid_characters_used),
+        ]));
+      }
+
+      if (preg_match('/(\s$)+/', $element['#value'])) {
+        $form_state->setError($element, t("The %element-title doesn't allow the patterns ending with whitespace.", ['%element-title' => $title]));
+      }
+    }
+
+    return $element;
+
   }
 
 }

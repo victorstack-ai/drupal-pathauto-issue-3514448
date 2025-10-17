@@ -177,7 +177,7 @@ trait PathautoTestHelperTrait {
     }
     $entities = $storage->loadMultiple($query->execute());
 
-    return $this->assertCount(1, $entities);
+    $this->assertCount(1, $entities);
   }
 
   /**
