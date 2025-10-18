@@ -5,19 +5,28 @@ namespace Drupal\pathauto\Entity;
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Condition\ConditionPluginCollection;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\Attribute\ConfigEntityType;
+use Drupal\Core\Entity\EntityDeleteForm;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider;
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\ContextInterface;
 use Drupal\Core\Plugin\Context\EntityContextDefinition;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Plugin\DefaultSingleLazyPluginCollection;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataReferenceDefinitionInterface;
 use Drupal\Core\TypedData\DataReferenceInterface;
 use Drupal\Core\TypedData\ListDataDefinitionInterface;
 use Drupal\Core\TypedData\ListInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\pathauto\Form\PatternDisableForm;
+use Drupal\pathauto\Form\PatternDuplicateForm;
+use Drupal\pathauto\Form\PatternEditForm;
+use Drupal\pathauto\Form\PatternEnableForm;
 use Drupal\pathauto\PathautoPatternInterface;
+use Drupal\pathauto\PathautoPatternListBuilder;
 
 /**
  * Defines the Pathauto pattern entity.
@@ -71,6 +80,54 @@ use Drupal\pathauto\PathautoPatternInterface;
  *   }
  * )
  */
+#[ConfigEntityType(
+  id: 'pathauto_pattern',
+  label: new TranslatableMarkup('Pathauto pattern'),
+  config_prefix: 'pattern',
+  entity_keys: [
+    'id' => 'id',
+    'label' => 'label',
+    'uuid' => 'uuid',
+    'weight' => 'weight',
+    'status' => 'status',
+  ],
+  handlers: [
+    'list_builder' => PathautoPatternListBuilder::class,
+    'form' => [
+      'default' => PatternEditForm::class,
+      'duplicate' => PatternDuplicateForm::class,
+      'delete' => EntityDeleteForm::class,
+      'enable' => PatternEnableForm::class,
+      'disable' => PatternDisableForm::class,
+    ],
+    'route_provider' => [
+      'html' => DefaultHtmlRouteProvider::class,
+    ],
+  ],
+  links: [
+    'collection' => '/admin/config/search/path/patterns',
+    'edit-form' => '/admin/config/search/path/patterns/{pathauto_pattern}',
+    'delete-form' => '/admin/config/search/path/patterns/{pathauto_pattern}/delete',
+    'enable' => '/admin/config/search/path/patterns/{pathauto_pattern}/enable',
+    'disable' => '/admin/config/search/path/patterns/{pathauto_pattern}/disable',
+    'duplicate-form' => '/admin/config/search/path/patterns/{pathauto_pattern}/duplicate',
+  ],
+  admin_permission: 'administer pathauto',
+  lookup_keys: [
+    'type',
+    'status',
+  ],
+  config_export: [
+    'id',
+    'label',
+    'type',
+    'pattern',
+    'selection_criteria',
+    'selection_logic',
+    'weight',
+    'relationships',
+  ]
+)]
 class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterface {
 
   /**

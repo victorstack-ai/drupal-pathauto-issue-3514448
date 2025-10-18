@@ -12,19 +12,20 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\Core\Plugin\ContextAwarePluginTrait;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\pathauto\Attribute\AliasType;
 use Drupal\pathauto\AliasTypeBatchUpdateInterface;
 use Drupal\pathauto\AliasTypeInterface;
 use Drupal\pathauto\PathautoState;
+use Drupal\pathauto\Plugin\Deriver\EntityAliasTypeDeriver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A pathauto alias type plugin for entities with canonical links.
- *
- * @AliasType(
- *   id = "canonical_entities",
- *   deriver = "\Drupal\pathauto\Plugin\Deriver\EntityAliasTypeDeriver"
- * )
  */
+#[AliasType(
+  id: 'canonical_entities',
+  deriver: EntityAliasTypeDeriver::class,
+)]
 class EntityAliasTypeBase extends PluginBase implements AliasTypeInterface, AliasTypeBatchUpdateInterface, ContainerFactoryPluginInterface {
 
   use ContextAwarePluginTrait;

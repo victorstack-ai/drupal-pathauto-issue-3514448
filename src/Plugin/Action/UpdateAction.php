@@ -4,17 +4,18 @@ namespace Drupal\pathauto\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
+use Drupal\Core\Action\Attribute\Action;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\pathauto\PathautoState;
 
 /**
  * Pathauto entity update action.
- *
- * @Action(
- *   id = "pathauto_update_alias",
- *   label = @Translation("Update URL alias of an entity"),
- * )
  */
+#[Action(
+  id: 'pathauto_update_alias',
+  label: new TranslatableMarkup('Update URL alias of an entity'),
+)]
 class UpdateAction extends ActionBase {
 
   /**

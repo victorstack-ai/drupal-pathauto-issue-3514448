@@ -8,14 +8,18 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\KeyValueStore\KeyValueDatabaseFactory;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\pathauto\PathautoState;
-use Drupal\pathauto_string_id_test\Entity\PathautoStringIdTest;
+use Drupal\pathauto_string_id_test\Entity\PathautoStringId;
 use Drupal\Tests\pathauto\Functional\PathautoTestHelperTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests auto-aliasing of entities that use string IDs.
  *
  * @group pathauto
  */
+#[Group('pathauto')]
+#[RunTestsInSeparateProcesses]
 class PathautoEntityWithStringIdTest extends KernelTestBase {
 
   use PathautoTestHelperTrait;
@@ -81,7 +85,7 @@ class PathautoEntityWithStringIdTest extends KernelTestBase {
    *   The expected key for 'pathauto_state.*' collections.
    */
   public function testEntityWithStringId($id, $expected_key) {
-    $entity = PathautoStringIdTest::create([
+    $entity = PathautoStringId::create([
       'id' => $id,
       'name' => $name = $this->randomMachineName(),
     ]);

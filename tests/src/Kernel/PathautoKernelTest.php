@@ -18,12 +18,16 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\pathauto\Functional\PathautoTestHelperTrait;
 use Drupal\user\Entity\User;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Unit tests for Pathauto functions.
  *
  * @group pathauto
  */
+#[Group('pathauto')]
+#[RunTestsInSeparateProcesses]
 class PathautoKernelTest extends KernelTestBase {
 
   use PathautoTestHelperTrait;
@@ -92,7 +96,6 @@ class PathautoKernelTest extends KernelTestBase {
     ConfigurableLanguage::createFromLangcode('fr')->save();
 
     $this->installSchema('node', ['node_access']);
-    $this->installSchema('system', ['sequences']);
 
     $type = NodeType::create(['type' => 'page']);
     $type->save();

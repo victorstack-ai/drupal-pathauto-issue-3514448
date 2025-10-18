@@ -53,7 +53,7 @@ function pathauto_help($route_name, RouteMatchInterface $route_match) {
  */
 #[LegacyHook]
 function pathauto_entity_insert(EntityInterface $entity) {
-  \Drupal::service(PathautoEntityHooks::class)->entityInsertOrUpdate($entity);
+  \Drupal::service(PathautoEntityHooks::class)->entityInsert($entity);
 }
 
 /**
@@ -61,7 +61,7 @@ function pathauto_entity_insert(EntityInterface $entity) {
  */
 #[LegacyHook]
 function pathauto_entity_update(EntityInterface $entity) {
-  \Drupal::service(PathautoEntityHooks::class)->entityInsertOrUpdate($entity);
+  \Drupal::service(PathautoEntityHooks::class)->entityUpdate($entity);
 }
 
 /**
