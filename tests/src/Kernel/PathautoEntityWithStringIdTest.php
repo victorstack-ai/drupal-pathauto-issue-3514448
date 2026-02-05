@@ -2,10 +2,7 @@
 
 namespace Drupal\Tests\pathauto\Kernel;
 
-use Drupal\Component\Serialization\PhpSerialize;
 use Drupal\Component\Utility\Crypt;
-use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\KeyValueStore\KeyValueDatabaseFactory;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\pathauto\PathautoState;
 use Drupal\pathauto_string_id_test\Entity\PathautoStringId;
@@ -48,21 +45,6 @@ class PathautoEntityWithStringIdTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function register(ContainerBuilder $container) {
-    parent::register($container);
-    // Kernel tests are using the 'keyvalue.memory' store but we want to test
-    // against the 'keyvalue.database'.
-    $container
-      ->register('keyvalue.database', KeyValueDatabaseFactory::class)
-      ->addArgument(new PhpSerialize())
-      ->addArgument($container->get('database'))
-      ->addTag('persist');
-    $container->setAlias('keyvalue', 'keyvalue.database');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['system', 'pathauto']);
@@ -72,6 +54,10 @@ class PathautoEntityWithStringIdTest extends KernelTestBase {
     /** @var \Drupal\pathauto\AliasTypeManager $alias_type_manager */
     $alias_type_manager = $this->container->get('plugin.manager.alias_type');
     $this->aliasType = $alias_type_manager->createInstance('canonical_entities:pathauto_string_id_test');
+    // Kernel tests default to in-memory key-value storage. Use the
+    // database-backed service to validate that Pathauto state can be
+    // persisted to the database without errors.
+    $this->container->set('keyvalue', $this->container->get('keyvalue.database'));
   }
 
   /**
