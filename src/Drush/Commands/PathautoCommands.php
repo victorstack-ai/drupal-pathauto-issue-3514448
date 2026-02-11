@@ -56,7 +56,7 @@ final class PathautoCommands extends DrushCommands {
    */
   #[CLI\Command(name: 'pathauto:aliases-generate', aliases: ['pag'])]
   #[CLI\Argument(name: 'action', description: 'The action to take. Possible actions are <info>create</info> (generate aliases for un-aliased paths only), <info>update</info> (update aliases for paths that have an existing alias) or <info>all</info> (generate aliases for all paths).')]
-  #[CLI\Argument(name: 'types', description: 'Comma-separated list of aliase typess to generate. Pass <info>all</info> to generate aliases for all types.')]
+  #[CLI\Argument(name: 'types', description: 'Comma-separated list of alias types to generate. Pass <info>all</info> to generate aliases for all types.')]
   #[CLI\Usage(name: 'drush pathauto:aliases-generate create all', description: 'Generate all URL aliases.')]
   #[CLI\Usage(name: 'drush pathauto:aliases-generate create canonical_entities:node', description: 'Generate URL aliases for un-aliased node paths only.')]
   #[CLI\Usage(name: 'drush pathauto:aliases-generate', description: 'When the arguments are omitted they can be chosen from an interactive menu.')]
@@ -185,7 +185,7 @@ final class PathautoCommands extends DrushCommands {
    *   Thrown when an alias type can not be instantiated.
    */
   #[CLI\Hook(type: HookManager::ARGUMENT_VALIDATOR)]
-  public function validateAliaseTypes(CommandData $commandData) {
+  public function validateAliasTypes(CommandData $commandData) {
     $input = $commandData->input();
 
     // Convert the comma-separated list of types to an array with no duplicates.

@@ -247,7 +247,7 @@ class PathautoNodeWebTest extends BrowserTestBase {
     $this->assertNoEntityAliasExists($node, '/content/node-version-two');
     $this->assertNoEntityAliasExists($node, '/content/node-version-three');
 
-    // Programatically save the node with an automatic alias.
+    // Programmatically save the node with an automatic alias.
     \Drupal::entityTypeManager()->getStorage('node')->resetCache();
     $node = Node::load($node->id());
     $node->path->pathauto = PathautoState::CREATE;

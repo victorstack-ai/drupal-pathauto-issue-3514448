@@ -143,14 +143,14 @@ class AliasCleaner implements AliasCleanerInterface {
       $output = trim($output, $separator);
 
       // Escape the separator for use in regular expressions.
-      $seppattern = preg_quote($separator, '/');
+      $sep_pattern = preg_quote($separator, '/');
 
       // Replace multiple separators with a single one.
-      $output = preg_replace("/$seppattern+/", $separator, $output);
+      $output = preg_replace("/$sep_pattern+/", $separator, $output);
 
       // Replace trailing separators around slashes.
       if ($separator !== '/') {
-        $output = preg_replace("/\/+$seppattern\/+|$seppattern\/+|\/+$seppattern/", "/", $output);
+        $output = preg_replace("/\/+$sep_pattern\/+|$sep_pattern\/+|\/+$sep_pattern/", "/", $output);
       }
       else {
         // If the separator is a slash, we need to re-add the leading slash

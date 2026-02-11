@@ -218,7 +218,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
 
     // Replace any tokens in the pattern.
     // Uses callback option to clean replacements. No sanitization.
-    // Pass empty BubbleableMetadata object to explicitly ignore cacheablity,
+    // Pass empty BubbleableMetadata object to explicitly ignore cacheability,
     // as the result is never rendered.
     $alias = $this->token->replace($pattern->getPattern(), $data, [
       'clear' => TRUE,
@@ -387,8 +387,8 @@ class PathautoGenerator implements PathautoGeneratorInterface {
 
     // @todo Move this to a method on the pattern plugin.
     if ($type == 'taxonomy_term') {
-      foreach ($this->loadTermChildren($entity->id()) as $subterm) {
-        $this->updateEntityAlias($subterm, $op, $options);
+      foreach ($this->loadTermChildren($entity->id()) as $sub_term) {
+        $this->updateEntityAlias($sub_term, $op, $options);
       }
     }
 
