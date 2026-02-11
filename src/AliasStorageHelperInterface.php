@@ -64,9 +64,6 @@ interface AliasStorageHelperInterface {
    *
    * @param string $source
    *   An internal Drupal path.
-   *
-   * @return bool
-   *   The URL alias source.
    */
   public function deleteBySourcePrefix($source);
 

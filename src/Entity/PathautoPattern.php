@@ -492,7 +492,7 @@ class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterfa
         return $this->getContextFromProperty($property_path, $contexts[$base]);
       }
       // @todo improve this exception message.
-      throw new ContextNotFoundException("The requested context was not found in the supplied array of contexts.");
+      throw new \Exception("The requested context was not found in the supplied array of contexts.");
     }
   }
 

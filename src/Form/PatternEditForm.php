@@ -272,11 +272,12 @@ class PatternEditForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    parent::save($form, $form_state);
+    $save_result = parent::save($form, $form_state);
     $this->messenger()->addMessage($this->t('Pattern %label saved.', [
       '%label' => $this->entity->label(),
     ]));
     $form_state->setRedirectUrl($this->entity->toUrl('collection'));
+    return $save_result;
   }
 
   /**

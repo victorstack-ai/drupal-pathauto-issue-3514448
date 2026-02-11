@@ -133,7 +133,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    *   The token entity mapper.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\pathauto\AliasTypeManager $alias_type_manager
+   * @param \Drupal\pathauto\AliasTypeManager|null $alias_type_manager
    *   Manages pathauto alias type plugins.
    */
   public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $pathauto_messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mapper, EntityTypeManagerInterface $entity_type_manager, ?AliasTypeManager $alias_type_manager = NULL) {
@@ -147,6 +147,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     $this->stringTranslation = $string_translation;
     $this->tokenEntityMapper = $token_entity_mapper;
     $this->entityTypeManager = $entity_type_manager;
+    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
     $this->aliasTypeManager = $alias_type_manager ?: \Drupal::service('plugin.manager.alias_type');
   }
 

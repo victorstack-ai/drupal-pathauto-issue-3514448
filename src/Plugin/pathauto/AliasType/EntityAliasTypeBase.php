@@ -15,6 +15,7 @@ use Drupal\Core\Plugin\PluginBase;
 use Drupal\pathauto\Attribute\AliasType;
 use Drupal\pathauto\AliasTypeBatchUpdateInterface;
 use Drupal\pathauto\AliasTypeInterface;
+use Drupal\pathauto\PathautoGeneratorInterface;
 use Drupal\pathauto\PathautoState;
 use Drupal\pathauto\Plugin\Deriver\EntityAliasTypeDeriver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -73,6 +74,13 @@ class EntityAliasTypeBase extends PluginBase implements AliasTypeInterface, Alia
   protected $prefix;
 
   /**
+   * The path auto generator service.
+   *
+   * @var \Drupal\pathauto\PathautoGeneratorInterface
+   */
+  protected PathautoGeneratorInterface $pathautoGenerator;
+
+  /**
    * Constructs a EntityAliasTypeBase instance.
    *
    * @param array $configuration
@@ -91,14 +99,18 @@ class EntityAliasTypeBase extends PluginBase implements AliasTypeInterface, Alia
    *   The key/value manager service.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
+   * @param \Drupal\pathauto\PathautoGeneratorInterface|null $pathauto_generator
+   *   The Pathauto generator service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ModuleHandlerInterface $module_handler, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, KeyValueFactoryInterface $key_value, Connection $database) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ModuleHandlerInterface $module_handler, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, KeyValueFactoryInterface $key_value, Connection $database, ?PathautoGeneratorInterface $pathauto_generator = NULL) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->moduleHandler = $module_handler;
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->keyValue = $key_value;
     $this->database = $database;
+    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
+    $this->pathautoGenerator = $pathauto_generator ?: \Drupal::service('pathauto.generator');
   }
 
   /**
@@ -113,7 +125,8 @@ class EntityAliasTypeBase extends PluginBase implements AliasTypeInterface, Alia
       $container->get('language_manager'),
       $container->get('entity_type.manager'),
       $container->get('keyvalue'),
-      $container->get('database')
+      $container->get('database'),
+      $container->get('pathauto.generator')
     );
   }
 
@@ -276,7 +289,7 @@ class EntityAliasTypeBase extends PluginBase implements AliasTypeInterface, Alia
       // Update aliases for the entity's default language and its translations.
       foreach ($entity->getTranslationLanguages() as $langcode => $language) {
         $translated_entity = $entity->getTranslation($langcode);
-        $result = \Drupal::service('pathauto.generator')->updateEntityAlias($translated_entity, 'bulkupdate', $options);
+        $result = $this->pathautoGenerator->updateEntityAlias($translated_entity, 'bulkupdate', $options);
         if ($result) {
           $updates++;
         }

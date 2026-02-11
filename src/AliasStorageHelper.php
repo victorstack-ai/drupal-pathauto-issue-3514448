@@ -73,8 +73,8 @@ class AliasStorageHelper implements AliasStorageHelperInterface {
    *   The messenger.
    * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
    *   The string translation service.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manger.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface|null $entity_type_manager
+   *   The entity type manager.
    */
   public function __construct(ConfigFactoryInterface $config_factory, AliasRepositoryInterface $alias_repository, Connection $database, MessengerInterface $messenger, TranslationInterface $string_translation, ?EntityTypeManagerInterface $entity_type_manager = NULL) {
     $this->configFactory = $config_factory;
@@ -82,7 +82,8 @@ class AliasStorageHelper implements AliasStorageHelperInterface {
     $this->database = $database;
     $this->messenger = $messenger;
     $this->stringTranslation = $string_translation;
-    $this->entityTypeManager = $entity_type_manager ?: \Drupal::service('entity_type.manager');
+    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
+    $this->entityTypeManager = $entity_type_manager ?: \Drupal::entityTypeManager();
   }
 
   /**
@@ -171,6 +172,7 @@ class AliasStorageHelper implements AliasStorageHelperInterface {
         'langcode' => $alias['langcode'],
       ];
     }
+    return FALSE;
   }
 
   /**

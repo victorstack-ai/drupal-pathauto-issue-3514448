@@ -60,6 +60,11 @@ composer (next major):
     DRUPAL_CORE: $CORE_MAJOR_DEVELOPMENT
     IGNORE_PROJECT_DRUPAL_CORE_VERSION: 1
 
+phpstan (previous major):
+  rules:
+    # We are only interested in PHPStan on the current version.
+    - when: never
+
 ###################################################################################
 #
 #                                        *

@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[MigrateSource(
   id: 'pathauto_pattern'
 )]
+// phpcs:ignore Drupal.Commenting.ClassComment.WrongStyle @phpstan-ignore class.extendsDeprecatedClass
 class PathautoPattern extends DrupalSqlBase {
 
   /**
@@ -35,6 +36,7 @@ class PathautoPattern extends DrupalSqlBase {
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfo $entity_bundle_info) {
+    // @phpstan-ignore method.deprecatedClass
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entity_type_manager);
     $this->entityTypeBundleInfo = $entity_bundle_info;
   }
@@ -87,6 +89,7 @@ class PathautoPattern extends DrupalSqlBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // @phpstan-ignore property.deprecatedClass
     $entity_definitions = $this->entityTypeManager->getDefinitions();
     $name = $row->getSourceProperty('name');
     // Pattern variables are made of pathauto_[entity type]_[bundle]_pattern.
