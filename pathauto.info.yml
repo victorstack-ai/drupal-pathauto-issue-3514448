@@ -4,10 +4,10 @@ core_version_requirement: ^10.2 || ^11
 type: module
 
 dependencies:
-- drupal:path
-- token:token
+  - drupal:path
+  - token:token
 
 configure: entity.pathauto_pattern.collection
 
 recommends:
-- redirect:redirect
+  - redirect:redirect
