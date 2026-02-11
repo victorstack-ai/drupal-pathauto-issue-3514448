@@ -10,7 +10,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 /**
  * Defines a AliasType attribute.
  *
- * Plugin Namespace: Plugin\pathauto\AliasType
+ * Plugin Namespace: Plugin\pathauto\AliasType.
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class AliasType extends Plugin {
@@ -29,7 +29,7 @@ class AliasType extends Plugin {
    * @param string|null $provider
    *   The module providing this plugin.
    * @param \Drupal\Core\Plugin\Context\ContextDefinitionInterface[] $context_definitions
-   *    (optional) An array of context definitions describing the context used by
+   *   (optional) An array of context definitions describing the context used by
    *    the plugin. The array is keyed by context names.
    */
   public function __construct(

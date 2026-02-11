@@ -156,6 +156,8 @@ class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterfa
   protected $type;
 
   /**
+   * The plugin collection that holds the alias type plugins.
+   *
    * @var \Drupal\Core\Plugin\DefaultSingleLazyPluginCollection
    */
   protected $aliasTypeCollection;
@@ -182,11 +184,15 @@ class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterfa
   protected $selection_logic = 'and';
 
   /**
+   * The weight of this pattern entity.
+   *
    * @var int
    */
   protected $weight = 0;
 
   /**
+   * An array of context tokens that this pattern entity relates to.
+   *
    * @var array[]
    *   Keys are context tokens, and values are arrays with the following keys:
    *   - label (string|null, optional): The human-readable label of this
@@ -464,7 +470,7 @@ class PathautoPattern extends ConfigEntityBase implements PathautoPatternInterfa
    * object.
    *
    * @param string $token
-   *   A ":" delimited set of tokens representing
+   *   A ":" delimited set of tokens representing.
    * @param \Drupal\Core\Plugin\Context\ContextInterface[] $contexts
    *   The array of available contexts.
    *

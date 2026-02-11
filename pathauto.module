@@ -13,7 +13,9 @@
 
 /**
  * @file
- * Main file for the Pathauto module, which automatically generates aliases for content.
+ * Main file for the Pathauto module.
+ *
+ * This module automatically generates aliases for content.
  *
  * @ingroup pathauto
  */
@@ -97,8 +99,10 @@ function pathauto_entity_base_field_info(EntityTypeInterface $entity_type) {
 }
 
 /**
- * Validate the pattern field, to ensure it doesn't contain any characters that
- * are invalid in URLs.
+ * Validate the pattern field.
+ *
+ * Ensure the pattern field doesn't contain any characters that are invalid
+ * in URLs.
  *
  * @deprecated in pathauto:8.x-1.15 and is removed from pathauto:2.0.0. Use
  * \Drupal\pathauto\Form\PatternEditForm::validatePattern() instead.
@@ -125,4 +129,3 @@ function pathauto_token_info() {
 function pathauto_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   return \Drupal::service(PathautoTokensHooks::class)->tokens($type, $tokens, $data, $options, $bubbleable_metadata);
 }
-

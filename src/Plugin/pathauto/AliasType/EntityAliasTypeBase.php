@@ -298,7 +298,10 @@ class EntityAliasTypeBase extends PluginBase implements AliasTypeInterface, Alia
    * @param int[] $pids_by_id
    *   A list of path IDs keyed by entity ID.
    *
-   * @deprecated Use \Drupal\pathauto\PathautoState::bulkDelete() instead.
+   * @deprecated in pathauto:8.x-1.0 and is removed from pathauto:2.0.0. Use
+   * \Drupal\pathauto\PathautoState::bulkDelete() instead.
+   *
+   * @see https://www.drupal.org/node/2892809
    */
   protected function bulkDelete(array $pids_by_id) {
     PathautoState::bulkDelete($this->getEntityTypeId(), $pids_by_id);
