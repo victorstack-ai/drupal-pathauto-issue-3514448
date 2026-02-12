@@ -138,7 +138,7 @@ class AliasCleaner implements AliasCleanerInterface {
 
     $output = $string;
 
-    if (strlen($separator)) {
+    if ($separator !== NULL && $separator !== '') {
       // Trim any leading or trailing separators.
       $output = trim($output, $separator);
 
