@@ -672,6 +672,32 @@ class PathautoKernelTest extends KernelTestBase {
   }
 
   /**
+   * Test that a translated pattern is used for alias generation.
+   */
+  public function testTranslatedPattern() {
+    // The default node pattern is '/content/[node:title]'.
+    // Add a French config override with a different prefix.
+    $override = \Drupal::languageManager()->getLanguageConfigOverride('fr', 'pathauto.pattern.' . $this->nodePattern->id());
+    $override->set('pattern', '/contenu/[node:title]')->save();
+
+    // Create a French node.
+    $node_fr = $this->drupalCreateNode([
+      'title' => 'Bonjour le monde',
+      'type' => 'page',
+      'langcode' => 'fr',
+    ]);
+    $this->assertEntityAlias($node_fr, '/contenu/bonjour-le-monde', 'fr');
+
+    // Create an English node — should use the default (non-overridden) pattern.
+    $node_en = $this->drupalCreateNode([
+      'title' => 'Hello world',
+      'type' => 'page',
+      'langcode' => 'en',
+    ]);
+    $this->assertEntityAlias($node_en, '/content/hello-world', 'en');
+  }
+
+  /**
    * Tests that the pathauto state property gets set to CREATED for new nodes.
    *
    * In some cases, this can trigger $node->path to be set up with no default

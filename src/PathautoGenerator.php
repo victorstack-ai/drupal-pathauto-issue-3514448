@@ -11,11 +11,13 @@ use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\token\TokenEntityMapperInterface;
 
 /**
@@ -111,6 +113,13 @@ class PathautoGenerator implements PathautoGeneratorInterface {
   protected $aliasTypeManager;
 
   /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
    * Creates a new Pathauto manager.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -135,8 +144,10 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    *   The entity type manager.
    * @param \Drupal\pathauto\AliasTypeManager|null $alias_type_manager
    *   Manages pathauto alias type plugins.
+   * @param \Drupal\Core\Language\LanguageManagerInterface|null $language_manager
+   *   The language manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $pathauto_messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mapper, EntityTypeManagerInterface $entity_type_manager, ?AliasTypeManager $alias_type_manager = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $pathauto_messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mapper, EntityTypeManagerInterface $entity_type_manager, ?AliasTypeManager $alias_type_manager = NULL, ?LanguageManagerInterface $language_manager = NULL) {
     $this->configFactory = $config_factory;
     $this->moduleHandler = $module_handler;
     $this->token = $token;
@@ -149,6 +160,8 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     $this->entityTypeManager = $entity_type_manager;
     // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
     $this->aliasTypeManager = $alias_type_manager ?: \Drupal::service('plugin.manager.alias_type');
+    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
+    $this->languageManager = $language_manager ?: \Drupal::service('language_manager');
   }
 
   /**
@@ -320,6 +333,16 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     if (!isset($this->patterns[$entity->getEntityTypeId()][$entity->id()][$langcode])) {
       foreach ($this->getPatternByEntityType($entity->getEntityTypeId()) as $pattern) {
         if ($pattern->applies($entity)) {
+          // Fetch the translated pattern string if a language-specific config
+          // override exists.
+          if ($this->languageManager instanceof ConfigurableLanguageManagerInterface) {
+            $override = $this->languageManager->getLanguageConfigOverride($langcode, 'pathauto.pattern.' . $pattern->id());
+            $translated = $override->get('pattern');
+            if ($translated !== NULL) {
+              $pattern = clone $pattern;
+              $pattern->setPattern($translated);
+            }
+          }
           $this->patterns[$entity->getEntityTypeId()][$entity->id()][$langcode] = $pattern;
           break;
         }
