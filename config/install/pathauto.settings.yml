@@ -4,7 +4,7 @@ punctuation:
   hyphen: 1
 verbose: FALSE
 separator: '-'
-max_length: 100
+max_length: 150
 max_component_length: 100
 transliterate: TRUE
 reduce_ascii: FALSE
