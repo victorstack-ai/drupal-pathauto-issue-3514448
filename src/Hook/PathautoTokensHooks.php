@@ -5,12 +5,15 @@ namespace Drupal\pathauto\Hook;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\pathauto\AliasCleanerInterface;
 
 /**
  * Token hook implementations for pathauto.
  */
 class PathautoTokensHooks {
+
+  use StringTranslationTrait;
 
   public function __construct(
     protected AliasCleanerInterface $aliasCleaner,
@@ -26,8 +29,8 @@ class PathautoTokensHooks {
   public function tokenInfo(): array {
     $info = [];
     $info['tokens']['array']['join-path'] = [
-      'name' => t('Joined path'),
-      'description' => t('The array values each cleaned by Pathauto and then joined with the slash into a string that resembles an URL.'),
+      'name' => $this->t('Joined path'),
+      'description' => $this->t('The array values each cleaned by Pathauto and then joined with the slash into a string that resembles an URL.'),
     ];
     return $info;
   }
