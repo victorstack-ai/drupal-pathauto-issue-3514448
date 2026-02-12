@@ -3,6 +3,8 @@
 namespace Drupal\Tests\pathauto\Kernel;
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
@@ -711,6 +713,39 @@ class PathautoKernelTest extends KernelTestBase {
     $node->path->langcode;
     $node->save();
     $this->assertEntityAlias($node, '/content/testalias');
+  }
+
+  /**
+   * Tests deleteEntityPathAll() with a <nolink> entity.
+   *
+   * Aliases should not be deleted for <nolink> entities.
+   *
+   * @see \Drupal\pathauto\AliasStorageHelper::deleteEntityPathAll()
+   * @see https://www.drupal.org/project/pathauto/issues/3367067
+   */
+  public function testDeleteEntityPathAllWithNoLinkEntity() {
+    // Create nodes with aliases.
+    $node1 = $this->drupalCreateNode(['title' => 'First node']);
+    $this->assertEntityAlias($node1, '/content/first-node');
+    $node2 = $this->drupalCreateNode(['title' => 'Second node']);
+    $this->assertEntityAlias($node2, '/content/second-node');
+
+    // Create a mock entity whose canonical URL is <nolink>.
+    $nolink_entity = $this->createMock(EntityInterface::class);
+    $nolink_entity->expects($this->atLeastOnce())
+      ->method('toUrl')
+      ->with('canonical')
+      ->willReturn(Url::fromRoute('<nolink>'));
+
+    // Calling deleteEntityPathAll() on the <nolink> entity should not delete
+    // any aliases.
+    /** @var \Drupal\pathauto\AliasStorageHelperInterface $alias_storage_helper */
+    $alias_storage_helper = \Drupal::service('pathauto.alias_storage_helper');
+    $alias_storage_helper->deleteEntityPathAll($nolink_entity);
+
+    // Assert that existing aliases are untouched.
+    $this->assertEntityAlias($node1, '/content/first-node');
+    $this->assertEntityAlias($node2, '/content/second-node');
   }
 
   /**
