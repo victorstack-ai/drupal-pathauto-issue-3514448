@@ -20,7 +20,10 @@ interface PathautoGeneratorInterface {
   const UPDATE_ACTION_LEAVE = 1;
 
   /**
-   * Create a new alias. Delete the old alias.
+   * Replace the old alias with the regenerated one.
+   *
+   * The existing path_alias entity is updated in place with the new value.
+   * The old alias stops working.
    */
   const UPDATE_ACTION_DELETE = 2;
 
