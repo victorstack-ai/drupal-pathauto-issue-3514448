@@ -264,6 +264,9 @@ class PathautoKernelTest extends KernelTestBase {
     // Transliteration of special chars that are converted to punctuation.
     $tests['© “Drupal”'] = 'drupal';
 
+    // Test that unicode soft hyphens (U+00AD) are removed by default.
+    $tests["soft\xC2\xADhyphen"] = 'softhyphen';
+
     foreach ($tests as $input => $expected) {
       $output = \Drupal::service('pathauto.alias_cleaner')->cleanString($input);
       $this->assertEquals($expected, $output, new FormattableMarkup("Drupal::service('pathauto.alias_cleaner')->cleanString('@input') expected '@expected', actual '@output'", [

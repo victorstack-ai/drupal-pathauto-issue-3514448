@@ -18,6 +18,7 @@ lsctzyaieno
 mytable
 pids
 sascha
+softhyphen
 sundstrom's
 testalias
 thelazydog

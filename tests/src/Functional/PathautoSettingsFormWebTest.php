@@ -62,6 +62,7 @@ class PathautoSettingsFormWebTest extends BrowserTestBase {
     'punctuation[comma]' => '0',
     'punctuation[period]' => '0',
     'punctuation[hyphen]' => '1',
+    'punctuation[soft_hyphen]' => '0',
     'punctuation[underscore]' => '0',
     'punctuation[colon]' => '0',
     'punctuation[semicolon]' => '0',

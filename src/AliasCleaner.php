@@ -305,6 +305,7 @@ class AliasCleaner implements AliasCleanerInterface {
         $punctuation['comma']             = ['value' => ',', 'name' => $this->t('Comma')];
         $punctuation['period']            = ['value' => '.', 'name' => $this->t('Period')];
         $punctuation['hyphen']            = ['value' => '-', 'name' => $this->t('Hyphen')];
+        $punctuation['soft_hyphen']       = ['value' => "\xC2\xAD", 'name' => $this->t('Soft Hyphen')];
         $punctuation['underscore']        = ['value' => '_', 'name' => $this->t('Underscore')];
         $punctuation['colon']             = ['value' => ':', 'name' => $this->t('Colon')];
         $punctuation['semicolon']         = ['value' => ';', 'name' => $this->t('Semicolon')];
