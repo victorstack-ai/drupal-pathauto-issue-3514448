@@ -6,12 +6,16 @@ use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\pathauto\Entity\PathautoPattern;
 use Drupal\Tests\pathauto\Functional\PathautoTestHelperTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test basic pathauto functionality.
  *
  * @group pathauto
  */
+#[Group('pathauto')]
+#[RunTestsInSeparateProcesses]
 class PathautoUiTest extends WebDriverTestBase {
 
   use PathautoTestHelperTrait;
@@ -92,6 +96,7 @@ class PathautoUiTest extends WebDriverTestBase {
     $session = $this->getSession();
     $session->getPage()->fillField('type', 'canonical_entities:node');
     $this->assertSession()->assertWaitOnAjaxRequest();
+    $this->assertSession()->waitForField('pattern');
 
     $edit = [
       'type' => 'canonical_entities:node',

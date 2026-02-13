@@ -8,12 +8,16 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\pathauto\PathautoState;
 use Drupal\Tests\pathauto\Functional\PathautoTestHelperTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test pathauto functionality with localization and translation.
  *
  * @group pathauto
  */
+#[Group('pathauto')]
+#[RunTestsInSeparateProcesses]
 class PathautoLocaleTest extends WebDriverTestBase {
 
   use PathautoTestHelperTrait;
@@ -46,7 +50,7 @@ class PathautoLocaleTest extends WebDriverTestBase {
    * Test that when an English node is updated, its old English alias is
    * updated and its newer French alias is left intact.
    */
-  public function testLanguageAliases() {
+  public function testLanguageAliases(): void {
 
     $this->createPattern('node', '/content/[node:title]');
 
@@ -96,7 +100,7 @@ class PathautoLocaleTest extends WebDriverTestBase {
   /**
    * Test that patterns work on multilingual content.
    */
-  public function testLanguagePatterns() {
+  public function testLanguagePatterns(): void {
 
     // Allow other modules to add additional permissions for the admin user.
     $permissions = [
@@ -125,39 +129,11 @@ class PathautoLocaleTest extends WebDriverTestBase {
     $this->enableArticleTranslation();
 
     // Create a pattern for English articles.
-    $this->drupalGet('admin/config/search/path/patterns/add');
-
-    $session = $this->getSession();
-    $page = $session->getPage();
-    $page->fillField('type', 'canonical_entities:node');
-    $this->assertSession()->assertWaitOnAjaxRequest();
-    sleep(1);
-
-    $page->fillField('label', 'English articles');
-    $this->assertSession()->waitForElementVisible('css', '#edit-label-machine-name-suffix .machine-name-value');
-    $edit = [
-      'bundles[article]' => TRUE,
-      'languages[en]' => TRUE,
-      'pattern' => '/the-articles/[node:title]',
-    ];
-    $this->submitForm($edit, 'Save');
-
+    $this->addPathautoPattern('English articles', 'en', '/the-articles/[node:title]');
     $this->assertSession()->pageTextContains('Pattern English articles saved.');
 
     // Create a pattern for French articles.
-    $this->drupalGet('admin/config/search/path/patterns/add');
-
-    $page->fillField('type', 'canonical_entities:node');
-    $this->assertSession()->assertWaitOnAjaxRequest();
-    $page->fillField('label', 'French articles');
-    $this->assertSession()->waitForElementVisible('css', '#edit-label-machine-name-suffix .machine-name-value');
-
-    $edit = [
-      'bundles[article]' => TRUE,
-      'languages[fr]' => TRUE,
-      'pattern' => '/les-articles/[node:title]',
-    ];
-    $this->submitForm($edit, 'Save');
+    $this->addPathautoPattern('French articles', 'fr', '/les-articles/[node:title]');
     $this->assertSession()->pageTextContains('Pattern French articles saved.');
 
     // Create a node and its translation. Assert aliases.
@@ -195,7 +171,7 @@ class PathautoLocaleTest extends WebDriverTestBase {
   /**
    * Tests the alias created for a node with language Not Applicable.
    */
-  public function testLanguageNotApplicable() {
+  public function testLanguageNotApplicable(): void {
     $this->drupalLogin($this->rootUser);
     $this->enableArticleTranslation();
 
@@ -220,14 +196,43 @@ class PathautoLocaleTest extends WebDriverTestBase {
   }
 
   /**
+   * Creates a pathauto pattern for article nodes via the UI.
+   *
+   * @param string $label
+   *   The pattern label.
+   * @param string $langcode
+   *   The language code to restrict the pattern to.
+   * @param string $pattern
+   *   The path pattern string.
+   */
+  protected function addPathautoPattern(string $label, string $langcode, string $pattern): void {
+    $this->drupalGet('admin/config/search/path/patterns/add');
+    $page = $this->getSession()->getPage();
+
+    $page->fillField('type', 'canonical_entities:node');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+    $this->assertSession()->waitForField('pattern');
+
+    $page->fillField('label', $label);
+    $this->assertSession()->waitForElementVisible('css', '#edit-label-machine-name-suffix .machine-name-value');
+    $edit = [
+      'bundles[article]' => TRUE,
+      'languages[' . $langcode . ']' => TRUE,
+      'pattern' => $pattern,
+    ];
+    $this->submitForm($edit, 'Save');
+  }
+
+  /**
    * Enables content translation on articles.
    */
-  protected function enableArticleTranslation() {
+  protected function enableArticleTranslation(): void {
     // Enable content translation on articles.
     $this->drupalGet('admin/config/regional/content-language');
 
     // Enable translation for node.
     $this->assertSession()->fieldExists('entity_types[node]')->check();
+    $this->assertSession()->waitForElementVisible('css', '#edit-settings-node');
     // Open details for Content settings in Drupal 10.2.
     $nodeSettings = $this->getSession()->getPage()->find('css', '#edit-settings-node summary');
     if ($nodeSettings) {
