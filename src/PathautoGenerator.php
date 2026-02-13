@@ -178,14 +178,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     try {
       $internalPath = $entity->toUrl()->getInternalPath();
     }
-    // @todo convert to multi-exception handling in PHP 7.1.
-    catch (EntityMalformedException $exception) {
-      return NULL;
-    }
-    catch (UndefinedLinkTemplateException $exception) {
-      return NULL;
-    }
-    catch (\UnexpectedValueException $exception) {
+    catch (EntityMalformedException | UndefinedLinkTemplateException | \UnexpectedValueException) {
       return NULL;
     }
 
