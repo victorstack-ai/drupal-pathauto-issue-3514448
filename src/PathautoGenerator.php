@@ -227,7 +227,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     // Uses callback option to clean replacements. No sanitization.
     // Pass empty BubbleableMetadata object to explicitly ignore cacheability,
     // as the result is never rendered.
-    $alias = $this->token->replace($pattern->getPattern(), $data, [
+    $alias = $this->token->replace($pattern->getPattern(), $context['data'], [
       'clear' => TRUE,
       'callback' => [$this->aliasCleaner, 'cleanTokenValues'],
       'langcode' => $langcode,
