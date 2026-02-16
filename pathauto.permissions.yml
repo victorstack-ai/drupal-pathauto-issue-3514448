@@ -10,5 +10,3 @@ bulk update aliases:
 bulk delete aliases:
   title: 'Bulk delete aliases'
   description: 'Allows a user to bulk delete aliases.'
-delete url aliases:
-  title: 'Delete URL aliases'

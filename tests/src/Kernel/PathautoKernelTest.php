@@ -752,6 +752,30 @@ class PathautoKernelTest extends KernelTestBase {
   }
 
   /**
+   * Tests delete alias action derivatives and execution.
+   */
+  public function testDeleteAliasActionDerivatives() {
+    /** @var \Drupal\Core\Action\ActionManagerInterface $action_manager */
+    $action_manager = \Drupal::service('plugin.manager.action');
+    $definitions = $action_manager->getDefinitions();
+
+    $this->assertArrayHasKey('entity:pathauto_delete_alias:node', $definitions);
+    $this->assertSame('node', $definitions['entity:pathauto_delete_alias:node']['type']);
+    $this->assertArrayHasKey('entity:pathauto_delete_alias:user', $definitions);
+    $this->assertSame('user', $definitions['entity:pathauto_delete_alias:user']['type']);
+    $this->assertArrayHasKey('entity:pathauto_delete_alias:taxonomy_term', $definitions);
+    $this->assertSame('taxonomy_term', $definitions['entity:pathauto_delete_alias:taxonomy_term']['type']);
+
+    $node = $this->drupalCreateNode(['title' => 'Delete alias action node']);
+    $this->assertEntityAlias($node, '/content/delete-alias-action-node');
+
+    $action = $action_manager->createInstance('entity:pathauto_delete_alias:node');
+    $action->execute($node);
+
+    $this->assertNoEntityAlias($node);
+  }
+
+  /**
    * Creates a node programmatically.
    *
    * @param array $settings
