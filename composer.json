@@ -14,12 +14,24 @@
         "drupal/ctools": "*"
     },
     "require-dev": {
-        "drupal/forum": "*"
+        "drupal/forum": "*",
+        "drupal/core-dev": "^10.3 || ^11",
+        "squizlabs/php_codesniffer": "^3.10",
+        "drupal/coder": "^8.3",
+        "phpunit/phpunit": "^9.6 || ^10"
     },
     "conflict": {
         "drush/drush": "<12.5.1"
     },
     "suggest": {
         "drupal/redirect": "When installed Pathauto will provide a new \"Update Action\" in case your URLs change. This is the recommended update action and is considered the best practice for SEO and usability."
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "drupal/core-composer-scaffold": true,
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
+        }
     }
 }

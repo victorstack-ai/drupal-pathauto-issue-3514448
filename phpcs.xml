@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="Drupal Pathauto">
+  <description>PHP CodeSniffer configuration for Pathauto.</description>
+  <arg name="extensions" value="php,module,inc,install,test,profile,theme,css,info,txt,md,yml"/>
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+  <file>.</file>
+  <exclude-pattern>vendor/*</exclude-pattern>
+  <exclude-pattern>node_modules/*</exclude-pattern>
+  <exclude-pattern>src_agent_hq_backup/*</exclude-pattern>
+</ruleset>
