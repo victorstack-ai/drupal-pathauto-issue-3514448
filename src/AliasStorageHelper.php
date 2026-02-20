@@ -76,15 +76,13 @@ class AliasStorageHelper implements AliasStorageHelperInterface {
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface|null $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasRepositoryInterface $alias_repository, Connection $database, MessengerInterface $messenger, TranslationInterface $string_translation, ?EntityTypeManagerInterface $entity_type_manager = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasRepositoryInterface $alias_repository, Connection $database, MessengerInterface $messenger, TranslationInterface $string_translation, EntityTypeManagerInterface $entity_type_manager) {
     $this->configFactory = $config_factory;
     $this->aliasRepository = $alias_repository;
     $this->database = $database;
     $this->messenger = $messenger;
     $this->stringTranslation = $string_translation;
-    // @phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
-    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
-    $this->entityTypeManager = $entity_type_manager ?: \Drupal::entityTypeManager();
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**

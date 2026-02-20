@@ -147,7 +147,7 @@ class PathautoGenerator implements PathautoGeneratorInterface {
    * @param \Drupal\Core\Language\LanguageManagerInterface|null $language_manager
    *   The language manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $pathauto_messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mapper, EntityTypeManagerInterface $entity_type_manager, ?AliasTypeManager $alias_type_manager = NULL, ?LanguageManagerInterface $language_manager = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory, ModuleHandlerInterface $module_handler, Token $token, AliasCleanerInterface $alias_cleaner, AliasStorageHelperInterface $alias_storage_helper, AliasUniquifierInterface $alias_uniquifier, MessengerInterface $pathauto_messenger, TranslationInterface $string_translation, TokenEntityMapperInterface $token_entity_mapper, EntityTypeManagerInterface $entity_type_manager, AliasTypeManager $alias_type_manager, LanguageManagerInterface $language_manager) {
     $this->configFactory = $config_factory;
     $this->moduleHandler = $module_handler;
     $this->token = $token;
@@ -158,12 +158,8 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     $this->stringTranslation = $string_translation;
     $this->tokenEntityMapper = $token_entity_mapper;
     $this->entityTypeManager = $entity_type_manager;
-    // @phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
-    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
-    $this->aliasTypeManager = $alias_type_manager ?: \Drupal::service('plugin.manager.alias_type');
-    // @phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
-    // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
-    $this->languageManager = $language_manager ?: \Drupal::service('language_manager');
+    $this->aliasTypeManager = $alias_type_manager;
+    $this->languageManager = $language_manager;
   }
 
   /**

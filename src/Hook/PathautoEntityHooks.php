@@ -7,6 +7,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\pathauto\AliasStorageHelperInterface;
 use Drupal\pathauto\PathautoFieldItemList;
 use Drupal\pathauto\PathautoGeneratorInterface;
@@ -19,11 +21,15 @@ use Drupal\pathauto\PathautoWidget;
  */
 class PathautoEntityHooks {
 
+  use StringTranslationTrait;
+
   public function __construct(
     protected PathautoGeneratorInterface $pathautoGenerator,
     protected AliasStorageHelperInterface $aliasStorageHelper,
     protected ConfigFactoryInterface $configFactory,
+    TranslationInterface $string_translation,
   ) {
+    $this->setStringTranslation($string_translation);
   }
 
   /**
@@ -81,8 +87,7 @@ class PathautoEntityHooks {
     // module's initialization, in tests), so that in_array() won't fail.
     if ($enabled_entity_types = $config->get('enabled_entity_types')) {
       if (in_array($entity_type->id(), $enabled_entity_types)) {
-        // @phpcs:ignore DrupalPractice.Functions.GlobalFunctions.t
-        $fields['path'] = BaseFieldDefinition::create('path')->setCustomStorage(TRUE)->setLabel(t('URL alias'))->setTranslatable(TRUE)->setComputed(TRUE)->setDisplayOptions('form', [
+        $fields['path'] = BaseFieldDefinition::create('path')->setCustomStorage(TRUE)->setLabel($this->t('URL alias'))->setTranslatable(TRUE)->setComputed(TRUE)->setDisplayOptions('form', [
           'type' => 'path',
           'weight' => 30,
         ])->setDisplayConfigurable('form', TRUE);
