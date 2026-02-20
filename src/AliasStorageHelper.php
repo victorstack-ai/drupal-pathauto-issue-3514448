@@ -82,6 +82,7 @@ class AliasStorageHelper implements AliasStorageHelperInterface {
     $this->database = $database;
     $this->messenger = $messenger;
     $this->stringTranslation = $string_translation;
+    // @phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
     $this->entityTypeManager = $entity_type_manager ?: \Drupal::entityTypeManager();
   }

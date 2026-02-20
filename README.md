@@ -1,4 +1,4 @@
-# Pathauto
+# Pathauto Module
 
 The Pathauto module provides support functions for other modules to
 automatically generate aliases based on appropriate criteria and tokens, with a

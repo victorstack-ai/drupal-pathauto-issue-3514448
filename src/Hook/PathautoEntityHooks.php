@@ -81,6 +81,7 @@ class PathautoEntityHooks {
     // module's initialization, in tests), so that in_array() won't fail.
     if ($enabled_entity_types = $config->get('enabled_entity_types')) {
       if (in_array($entity_type->id(), $enabled_entity_types)) {
+        // @phpcs:ignore DrupalPractice.Functions.GlobalFunctions.t
         $fields['path'] = BaseFieldDefinition::create('path')->setCustomStorage(TRUE)->setLabel(t('URL alias'))->setTranslatable(TRUE)->setComputed(TRUE)->setDisplayOptions('form', [
           'type' => 'path',
           'weight' => 30,

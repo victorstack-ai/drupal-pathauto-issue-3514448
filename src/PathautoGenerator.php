@@ -158,8 +158,10 @@ class PathautoGenerator implements PathautoGeneratorInterface {
     $this->stringTranslation = $string_translation;
     $this->tokenEntityMapper = $token_entity_mapper;
     $this->entityTypeManager = $entity_type_manager;
+    // @phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
     $this->aliasTypeManager = $alias_type_manager ?: \Drupal::service('plugin.manager.alias_type');
+    // @phpcs:ignore DrupalPractice.Objects.GlobalDrupal.GlobalDrupal
     // @phpstan-ignore globalDrupalDependencyInjection.useDependencyInjection
     $this->languageManager = $language_manager ?: \Drupal::service('language_manager');
   }
